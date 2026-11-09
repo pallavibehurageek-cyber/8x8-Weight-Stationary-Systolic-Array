@@ -2,7 +2,7 @@
 
 ## Overview
 
-A fully custom, tapeout-ready 8x8 weight-stationary systolic array ML accelerator, designed in SystemVerilog and taken through a complete RTL-to-GDS physical design flow on two process nodes using open-source EDA tools. The design was submitted to the ChipFoundry CI2609 shuttle via the Caravel SoC harness as part of the Silicon2System contest.
+A fully custom, tapeout-ready 8x8 weight-stationary systolic array ML accelerator, designed in SystemVerilog and taken through a complete RTL-to-GDS physical design flow on two process nodes using open-source EDA tools.
 
 This architecture is the compute backbone of matrix-multiplication engines used in AI/ML inference (the same dataflow as Google's TPU). Each of the 64 processing elements runs one MAC per clock cycle, enabling highly parallel, pipelined matrix-vector multiplication with minimal data movement.
 
