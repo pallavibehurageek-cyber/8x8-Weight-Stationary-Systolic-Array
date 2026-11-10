@@ -1,3 +1,8 @@
+// =============================================================================
+// systolic_array_tb.sv — Testbench for 8x8 Weight-Stationary Systolic Array
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Description:
 //   Self-checking testbench with automated PASS/FAIL verification.
 //   Validates correct MAC accumulation and skew-aware output sampling.
 //

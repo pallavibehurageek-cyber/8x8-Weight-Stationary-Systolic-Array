@@ -1,6 +1,7 @@
 // =============================================================================
 // pe_yosys.sv — Processing Element (Yosys-Compatible, SkyWater 130nm)
 // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Description:
 //   Yosys-compatible version of pe.sv for RTL-to-GDS synthesis.
 //   Uses Verilog-2001 style (wire/reg, always) instead of SystemVerilog
