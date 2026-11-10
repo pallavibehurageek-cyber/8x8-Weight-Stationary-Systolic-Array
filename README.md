@@ -2,7 +2,9 @@
 
 ## Overview
 
-A fully custom, tapeout-ready 8x8 weight-stationary systolic array ML accelerator, designed in SystemVerilog and taken through a complete RTL-to-GDS physical design flow on two process nodes using open-source EDA tools. This architecture is the compute backbone of matrix-multiplication engines used in AI/ML inference (the same dataflow as Google's TPU). Each of the 64 processing elements runs one MAC per clock cycle, enabling highly parallel, pipelined matrix-vector multiplication with minimal data movement.
+A fully custom, tapeout-ready 8x8 weight-stationary systolic array ML accelerator, designed in SystemVerilog and taken through a complete RTL-to-GDS physical design flow on two process nodes using open-source EDA tools. 
+
+This architecture is the compute backbone of matrix-multiplication engines used in AI/ML inference (the same dataflow as Google's TPU). Each of the 64 processing elements runs one MAC per clock cycle, enabling highly parallel, pipelined matrix-vector multiplication with minimal data movement.
 
 ---
 
@@ -73,7 +75,7 @@ Weights are stationary: loaded once before inference, held fixed during computat
 
 ## Tapeout — ChipFoundry CI2609
 
-The design was hardened for Sky130 tapeout using OpenLane 2 with a Caravel user project wrapper and submitted to the ChipFoundry CI2609 shuttle as part of the Silicon2System contest.
+The design was hardened for Sky130 tapeout using OpenLane 2 with a Caravel user project wrapper.
 
 **Precheck results:** 8/13 checks passing. The remaining failures are infrastructure false positives (3 checks report total=0 but still fail due to a server-side issue) and BEOL spacing violations in the Caravel wrapper power ring, not the user project area. Manual review was requested.
 
