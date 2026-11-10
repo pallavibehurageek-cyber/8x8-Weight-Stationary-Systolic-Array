@@ -1,0 +1,6 @@
+* text=auto
+*.gds filter=lfs diff=lfs merge=lfs -text
+*.gds.gz binary
+*.png binary
+*.pdf binary
+*.vcd binary
