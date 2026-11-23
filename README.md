@@ -21,7 +21,7 @@ This architecture is the compute backbone of matrix-multiplication engines used 
 | Reported block-level DRC count | 0 | 0 |
 | Flow Runtime | ~23 min | ~41 min |
 
-Cross-node comparison: 10x frequency gain, 61.7x area reduction, from 130nm to 7nm.
+Cross-node comparison: 10x frequency gain and 61.7x area reduction are reported between the Sky130 and ASAP7 runs. These results come from different PDKs and flow configurations; they are not a controlled same-node comparison and should not be attributed solely to architectural changes.
 
 ASAP7 power is VCD-annotated from functional simulation at 500 MHz: 3.87 W internal, 1.18 W switching, 3.58 uW leakage. Clock tree accounts for 1.92 W (38%) of total.
 
@@ -45,7 +45,7 @@ The naive kernel moves 274.95 GB through cache for a problem that needs 768 KB o
 
 ## Where the GPU Wins
 
-cuBLAS INT8 reaches 28,325 GFLOPS at N=4096 using Tensor Cores, 3.1x faster than cuBLAS FP32 at the same size. The crossover between hardware and GPU efficiency falls between N=64 and N=256. Below that range, the hardware wins on latency, energy, and determinism simultaneously. Above it, GPU throughput takes over and the comparison runs the other way.
+cuBLAS INT8 reaches 28,325 GFLOPS at N=4096 using Tensor Cores, 3.1x faster than cuBLAS FP32 at the same size. In the documented benchmark, the custom array is most relevant to the small fixed-size workload, while GPU throughput dominates at larger sizes. The crossover reported between N=64 and N=256 is specific to this setup and should not be generalized to other workloads or system configurations.
 
 ## Roofline Position
 
@@ -126,6 +126,8 @@ Post-route PDN analysis ran across 98,262 nodes using analyze_power_grid with SP
 | Nodes Analyzed | N/A | 98,262 |
 
 The heatmap shows a structured diagonal hot-spot pattern mapping onto the 8x8 PE grid. Root cause: 2.7 um M5/M6 stripe pitch too coarse for the current density 64 simultaneous MACs generate at 500 MHz. Proposed fix: reduce pitch to 1.5 um or add a dedicated M3/M4 mesh over the PE array.
+
+**Open issue:** The reported ASAP7 worst-case IR drop is 812.94 mV on a 0.77 V supply, despite a much lower mean drop. Treat this PDN result as an unresolved power-integrity problem; the current analysis is exploratory and should not be presented as a passed IR-drop/sign-off result.
 
 ---
 
