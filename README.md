@@ -1,8 +1,8 @@
-# 8x8 Weight-Stationary Systolic Array — RTL to GDS to Tapeout
+# 8×8 Weight-Stationary Systolic Array — RTL-to-GDS Physical-Design Exploration
 
 ## Overview
 
-A fully custom, tapeout-ready 8x8 weight-stationary systolic array ML accelerator, designed in SystemVerilog and taken through a complete RTL-to-GDS physical design flow on two process nodes using open-source EDA tools. 
+A SystemVerilog implementation of an 8×8 weight-stationary systolic-array ML accelerator, taken through RTL simulation and RTL-to-GDS physical-design experiments using open-source EDA tools. The repository documents runs on SkyWater 130 nm and ASAP7 7 nm, plus an IHP SG13G2 flow. Generated GDS and block-level physical-design results do not, by themselves, establish tapeout approval, fabrication, or full-chip sign-off.
 
 This architecture is the compute backbone of matrix-multiplication engines used in AI/ML inference (the same dataflow as Google's TPU). Each of the 64 processing elements runs one MAC per clock cycle, enabling highly parallel, pipelined matrix-vector multiplication with minimal data movement.
 
@@ -18,7 +18,7 @@ This architecture is the compute backbone of matrix-multiplication engines used 
 | Total Power | 12.75 mW (SPEF) | 5.05 W (VCD-annotated) |
 | Cell Count | 24,711 | 32,446 |
 | Utilization | 44% | 25% |
-| DRC Violations | 0 | 0 |
+| Reported block-level DRC count | 0 | 0 |
 | Flow Runtime | ~23 min | ~41 min |
 
 Cross-node comparison: 10x frequency gain, 61.7x area reduction, from 130nm to 7nm.
@@ -28,6 +28,8 @@ ASAP7 power is VCD-annotated from functional simulation at 500 MHz: 3.87 W inter
 ## Hardware vs. GPU: Matrix Multiply Efficiency
 
 The same 8x8 matrix multiply workload was benchmarked on an NVIDIA RTX 4060 Laptop GPU (Ampere, CC 8.9) using naive CUDA and cuBLAS kernels in both FP32 and INT8, across matrix sizes N = 8 to 4096. The full methodology, Nsight Compute profiling, and roofline analysis are written up in a paper targeting GLSVLSI 2027 (see Paper below).
+
+**Interpretation note:** These are workload- and platform-specific experiments, not a general claim that a small custom array outperforms a GPU. The comparison includes different system boundaries (notably host/PCIe transfer for the GPU case); consult the methodology and benchmark scripts before drawing end-to-end conclusions.
 
 ## Key Results at N=8 (the array's native size)
 
@@ -73,13 +75,15 @@ Weights are stationary: loaded once before inference, held fixed during computat
 
 ---
 
-## Tapeout — ChipFoundry CI2609
+## Caravel Integration / Tapeout-Track Status
 
-The design was hardened for Sky130 tapeout using OpenLane 2 with a Caravel user project wrapper.
+The Sky130 design has been integrated with a Caravel user-project wrapper for a tapeout-track evaluation using OpenLane 2.
 
-**Precheck results:** 8/13 checks passing. The remaining failures are infrastructure false positives (3 checks report total=0 but still fail due to a server-side issue) and BEOL spacing violations in the Caravel wrapper power ring, not the user project area. Manual review was requested.
+**Current precheck status:** 8/13 checks passing. The recorded remaining items include BEOL spacing violations in the Caravel wrapper power ring and three checks that report a zero total while still failing. Their underlying cause has not been independently established; manual review was requested.
 
-**Caravel wrapper:** SPI signals exposed through io_in[8:10] and io_out[11]. The first 128 bits of partial sum output are also readable via the Caravel Logic Analyzer bus.
+**Caravel wrapper:** SPI signals are exposed through io_in[8:10] and io_out[11]. The first 128 bits of partial-sum output are also readable through the Caravel Logic Analyzer bus.
+
+**Scope:** This repository documents RTL, simulation, physical-design experiments and tapeout-track integration work. It does not claim tapeout approval, completed sign-off, or fabricated silicon. The block-level DRC figures in the results table should not be read as a sign-off result for the Caravel wrapper or the complete chip.
 
 ---
 
